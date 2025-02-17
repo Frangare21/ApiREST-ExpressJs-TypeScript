@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import UserModel from "../models/userModel";
 import User from "../models/userModel";
+import jwt from "jsonwebtoken";
 
 
 export const getUsers = async (req: Request, res: Response) => {
@@ -63,5 +64,25 @@ export const updateUser = async (req: Request, res: Response) => {
         res.status(200).json(updatedUser)
     } catch (error) {
         res.status(500).json({ message: `Cannot update the user: ${error}` })
+    }
+}
+
+export const loginUser = async (req: Request, res: Response) => {
+    try {
+        const {email, password} = req.body;
+
+        const user = await User.findOne({email});
+        if (!user) {
+            return res.status(404).json({message: "User not found"});
+        }
+        if (user.password !== password) {
+            return res.status(401).json({message: "Invalid password"});
+        }
+
+        const token = jwt.sign({userId: user._id}, 'secretkey1', { expiresIn: '1h' });
+
+        res.status(200).json({token});
+    } catch (error) {
+        res.status(500).json({message: `Cannot login the user: ${error}`})
     }
 }
