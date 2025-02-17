@@ -13,7 +13,7 @@ export function initializeServer(port: any, dbUrl: string) {
     connectDb(dbUrl).then(() => console.log("Connection established with DB!"));
 
     app.use('/protected', protectedRoute);
-    app.use("/api", bookRoutes, userRoutes);
+    app.use('/api', bookRoutes, userRoutes);
 
     //Example route for the API
     app.get('/', (req, res) => {
