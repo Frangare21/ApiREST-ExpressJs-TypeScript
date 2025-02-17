@@ -1,6 +1,7 @@
 import {initializeServer} from "./app";
+import {getApiPort, getDbUri} from "./services/enviromentService";
 
-const port = process.env.PORT || 3000;
-const dbUrl = process.env.DB_URL || '';
+const port = getApiPort();
+const dbUrl = getDbUri();
 
 initializeServer(port, dbUrl);

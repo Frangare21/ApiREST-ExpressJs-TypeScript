@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import UserModel from "../models/userModel";
 import User from "../models/userModel";
 import jwt from "jsonwebtoken";
+import {getSecretKey} from "../services/enviromentService";
 
 
 export const getUsers = async (req: Request, res: Response) => {
@@ -79,7 +80,7 @@ export const loginUser = async (req: Request, res: Response) => {
             return res.status(401).json({message: "Invalid password"});
         }
 
-        const token = jwt.sign({userId: user._id}, 'secretkey1', { expiresIn: '1h' });
+        const token = jwt.sign({userId: user._id}, getSecretKey() , { expiresIn: '1h' });
 
         res.status(200).json({token});
     } catch (error) {
